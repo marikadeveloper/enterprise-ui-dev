@@ -13,19 +13,31 @@ it('returns an empty array as the initial state', () => {
 it('supports adding an item with the correct name', () => {
   expect.hasAssertions();
   const result = reducer([], add({ name: 'iPhone' }));
-  expect(result[0].name).toBe('iPhone');
+  expect(result).toEqual([
+    expect.objectContaining({
+      name: 'iPhone',
+    }),
+  ]);
 });
 
 it('prefixes ids with "item-"', () => {
   expect.hasAssertions();
   const result = reducer([], add({ name: 'iPhone' }));
-  expect(result[0].id).toMatch(/^item-/);
+  expect(result).toEqual([
+    expect.objectContaining({
+      id: expect.stringMatching(/^item-/),
+    }),
+  ]);
 });
 
 it('defaults new items to a packed status of false', () => {
   expect.hasAssertions();
   const result = reducer([], add({ name: 'iPhone' }));
-  expect(result[0].packed).toBe(false);
+  expect(result).toEqual([
+    expect.objectContaining({
+      packed: false,
+    }),
+  ]);
 });
 
 it('supports removing an item', () => {
@@ -55,7 +67,11 @@ it('supports toggling an item', () => {
 
   const result = reducer(state, toggle({ id: '1' }));
 
-  expect(result[0].packed).toBe(true);
+  expect(result).toEqual([
+    expect.objectContaining({
+      packed: true,
+    }),
+  ]);
 });
 
 it('supports updating an item', () => {
@@ -71,7 +87,11 @@ it('supports updating an item', () => {
   const newName = 'Samsung Galaxy S23';
   const result = reducer(state, update({ id: '1', name: newName }));
 
-  expect(result[0].name).toBe(newName);
+  expect(result).toEqual([
+    expect.objectContaining({
+      name: newName,
+    }),
+  ]);
 });
 
 it('supports marking all items as unpacked', () => {
