@@ -1,8 +1,8 @@
 import reducer, {
   add,
+  markAllAsUnpacked,
   remove,
   toggle,
-  markAllAsUnpacked,
   update,
 } from './items-slice';
 
@@ -10,22 +10,25 @@ it('returns an empty array as the initial state', () => {
   expect(reducer(undefined, { type: 'noop' })).toEqual([]);
 });
 
-it.todo('supports adding an item with the correct name', () => {
+it('supports adding an item with the correct name', () => {
   expect.hasAssertions();
   const result = reducer([], add({ name: 'iPhone' }));
+  expect(result[0].name).toBe('iPhone');
 });
 
-it.todo('prefixes ids with "item-"', () => {
+it('prefixes ids with "item-"', () => {
   expect.hasAssertions();
   const result = reducer([], add({ name: 'iPhone' }));
+  expect(result[0].id).toMatch(/^item-/);
 });
 
-it.todo('defaults new items to a packed status of false', () => {
+it('defaults new items to a packed status of false', () => {
   expect.hasAssertions();
   const result = reducer([], add({ name: 'iPhone' }));
+  expect(result[0].packed).toBe(false);
 });
 
-it.todo('supports removing an item', () => {
+it('supports removing an item', () => {
   expect.hasAssertions();
   const state = [
     {
@@ -36,9 +39,11 @@ it.todo('supports removing an item', () => {
   ];
 
   const result = reducer(state, remove({ id: '1' }));
+
+  expect(result).toEqual([]);
 });
 
-it.todo('supports toggling an item', () => {
+it('supports toggling an item', () => {
   expect.hasAssertions();
   const state = [
     {
@@ -49,9 +54,11 @@ it.todo('supports toggling an item', () => {
   ];
 
   const result = reducer(state, toggle({ id: '1' }));
+
+  expect(result[0].packed).toBe(true);
 });
 
-it.todo('supports updating an item', () => {
+it('supports updating an item', () => {
   expect.hasAssertions();
   const state = [
     {
@@ -61,13 +68,13 @@ it.todo('supports updating an item', () => {
     },
   ];
 
-  const result = reducer(
-    state,
-    update({ id: '1', name: 'Samsung Galaxy S23' }),
-  );
+  const newName = 'Samsung Galaxy S23';
+  const result = reducer(state, update({ id: '1', name: newName }));
+
+  expect(result[0].name).toBe(newName);
 });
 
-it.todo('supports marking all items as unpacked', () => {
+it('supports marking all items as unpacked', () => {
   expect.hasAssertions();
   const state = [
     {
@@ -83,4 +90,8 @@ it.todo('supports marking all items as unpacked', () => {
   ];
 
   const result = reducer(state, markAllAsUnpacked());
+
+  result.forEach((item) => {
+    expect(item.packed).toBe(false);
+  });
 });
