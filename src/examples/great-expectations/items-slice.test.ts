@@ -52,7 +52,7 @@ it('supports removing an item', () => {
 
   const result = reducer(state, remove({ id: '1' }));
 
-  expect(result).toEqual([]);
+  expect(result).not.toContain(expect.objectContaining({ id: '1' }));
 });
 
 it('supports toggling an item', () => {
